@@ -1,0 +1,37 @@
+<div class="position-relative">
+  <img lazyLoad="assets/icons/Background pattern.svg" class="w-100 position-absolute background-pattern" alt="">
+  <section class="m-auto text-center m-0">
+    <div class="container text-center d-flex flex-column align-items-center">
+      <p class="d-flex justify-content-center align-items-center m-auto"><span class="our-blog">Our blog</span> <span
+          class="pricing-plans">Pricing plans</span></p>
+      <h1>Resources and insights</h1>
+      <p>The latest industry news, interviews, technologies, and resources.</p>
+
+      <div class="input-group">
+        <svg-icon src="assets/icons/search.svg" [svgStyle]="{ 'width.px':15 }"
+          class="position-absolute top-50 translate-middle"></svg-icon>
+        <input type="text" class="form-control" placeholder="Search" (keyup)="search($any($event).target.value)">
+      </div>
+    </div>
+  </section>
+
+  <app-error-message *ngIf="showErrorMessage" (SendRetry)="fetchAgain($event)"></app-error-message>
+
+  <section *ngIf="!showErrorMessage">
+    <div class="container text-center">
+      <div class="row justify-content-center">
+        <div class="col- bg-light" *ngFor="let post of posts; let i = index; trackBy: trackByFn;" [ngClass]="{'even-card': i % 2 === 0}" (click)="navigateFullPost(post.url)">
+          <app-blog-post-item [post]="post"></app-blog-post-item>
+        </div>
+      </div>
+
+      <button type="button" *ngIf="!allPostsLoaded" class="mb-4" (click)="loadMore()">
+        <svg-icon src="assets/icons/arrow-down.svg" [svgStyle]="{ 'width.px':20 }"></svg-icon> Load more
+      </button>
+
+      <app-pagination-controls (paginatedPosts)="pagination($event)"></app-pagination-controls>
+    </div>
+  </section>
+</div>
+
+<app-loading-indicator></app-loading-indicator>
